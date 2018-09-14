@@ -1,4 +1,4 @@
-package com.evangu.config;
+package com.evangu.raysauth;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
