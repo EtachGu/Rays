@@ -1,4 +1,4 @@
-package com.evangu.config;
+package com.evangu.raysauth.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,7 +25,6 @@ public class ResourceConfiguration extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        // @formatter:off
         http
                 // Since we want the protected resources to be accessible in the UI as well we need
                 // session creation to be allowed (it's disabled by default in 2.0.6)
@@ -38,6 +37,5 @@ public class ResourceConfiguration extends ResourceServerConfigurerAdapter {
                 .authorizeRequests()
 //                    .antMatchers("/product/**").access("#oauth2.hasScope('select') and hasRole('ROLE_USER')")
                 .antMatchers("/order/**").authenticated();//配置order访问控制，必须认证过后才可以访问
-        // @formatter:on
     }
 }

@@ -1,4 +1,4 @@
-package com.evangu.service;
+package com.evangu.raysauth.service;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

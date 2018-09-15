@@ -1,4 +1,4 @@
-package com.evangu.config;
+package com.evangu.raysauth.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
