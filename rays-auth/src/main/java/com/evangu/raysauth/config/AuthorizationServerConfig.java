@@ -47,11 +47,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .scopes("select")
                 .authorities("client")
                 .secret("{bcrypt}$2a$10$CyHioIZ2mp5cirwpI5K5l.fPSRv9HXU340A2/KrVVVZmk7S5EAr.q")
-                .and().withClient("client_3")
-                .redirectUris("http://www.baidu.com","http://localhost:8080/order/1")
-                .authorizedGrantTypes("authorization_code")
+                .and().withClient("fooClientIdPassword")
+//                .redirectUris("http://www.baidu.com","http://localhost:8080/order/1")
+                .authorizedGrantTypes("authorization_code","password","refresh_token")
                 .scopes("select")
-                .authorities("client")
+//                .authorities("client")
                 .secret("{bcrypt}$2a$10$CyHioIZ2mp5cirwpI5K5l.fPSRv9HXU340A2/KrVVVZmk7S5EAr.q");
     }
 
@@ -78,7 +78,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         //允许表单认证
         oauthServer
                 .tokenKeyAccess("permitAll()") //url:/oauth/token_key,exposes public key for token verification if using JWT tokens
-                .checkTokenAccess("isAuthenticated()") //url:/oauth/check_token allow check token
+                .checkTokenAccess("permitAll()") //url:/oauth/check_token allow check token
                 .allowFormAuthenticationForClients();
     }
 }
