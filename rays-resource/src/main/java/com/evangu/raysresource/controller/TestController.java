@@ -25,7 +25,7 @@ public class TestController {
         return "product id : " + id;
     }
 
-    @PreAuthorize("#oauth2.hasScope('select')")
+    @PreAuthorize("#oauth2.hasScope('read')")
     @GetMapping("/order/{id}")
     public String getOrder(@PathVariable String id) {
         //for debug

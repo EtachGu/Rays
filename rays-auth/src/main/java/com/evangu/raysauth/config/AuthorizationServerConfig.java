@@ -119,7 +119,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         //允许表单认证
         oauthServer
                 .tokenKeyAccess("permitAll()") //url:/oauth/token_key,exposes public key for token verification if using JWT tokens
-                .checkTokenAccess("permitAll()") //url:/oauth/check_token allow check token
+//                .checkTokenAccess("isAuthenticated()")//url:/oauth/check_token allow check token
+                .checkTokenAccess("permitAll()")
                 .allowFormAuthenticationForClients();
     }
 

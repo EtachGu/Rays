@@ -65,7 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 ////                .and()
 ////                .exceptionHandling()
 ////                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/"));
-//        http.authorizeRequests().antMatchers("/**").hasRole("USER").and().formLogin();
+        http.authorizeRequests().antMatchers("/**").hasRole("USER").and().formLogin();
         // @formatter:on
     }
 
