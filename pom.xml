@@ -9,7 +9,11 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
+        <module>rays-auth</module>
+        <module>rays-eureka</module>
         <module>rays-config</module>
+        <module>rays-resource</module>
+        <module>rays-web</module>
     </modules>
 
 
