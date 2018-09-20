@@ -23,11 +23,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
-                .loginPage("/")
-        .and().authorizeRequests().anyRequest().permitAll()
+        http.authorizeRequests()
+                .antMatchers("/").hasRole("USER")
+            .and()
+                .authorizeRequests().antMatchers("/account/**").permitAll()
                 .and()
-                .addFilterBefore(oauth2ClientAuthenticationProcessingFilter,BasicAuthenticationFilter.class)
-                .csrf().disable();
+            .authorizeRequests().anyRequest().authenticated()
+                .and()
+                .formLogin().loginPage("/login").permitAll()
+            .and()
+            .addFilterBefore(oauth2ClientAuthenticationProcessingFilter,BasicAuthenticationFilter.class)
+            .csrf().disable();
     }
 }

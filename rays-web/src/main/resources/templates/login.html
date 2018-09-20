@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
 </head>
     <body>
+        <h2>直接用户密码登录</h2>
         <form th:action="@{/login}" method="post">
             <div>
                 <!--/*@thymesVar id="error" type=""*/-->
@@ -25,5 +26,9 @@
             <br />
             <button type="submit" style="width:190px;">登 录</button>
         </form>
+        <br>
+        <h2>通过OAuth2 授权登录</h2>
+        <a href="/account/connect" target="_blank">授权登录</a>
+
     </body>
 </html>
