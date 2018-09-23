@@ -10,6 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -30,6 +31,9 @@ import java.text.MessageFormat;
 public class LoginController {
 
     private RestTemplate restTemplate;
+
+//    @Autowired
+//    private OAuth2RestTemplate oAuth2RestTemplate;
 
     @Value("fooClientIdPassword")
     private String clientId;
@@ -63,19 +67,17 @@ public class LoginController {
         return "redirect:" + url;
     }
 
-    @RequestMapping("/account/connect/callback")
-    public String getAccessKeyAndGoHome(@RequestParam("code") String authenticationCode,RedirectAttributes redirectAttributes){
-        String urlTemplate = "http://localhost:8081/oauth/token?grant_type=authorization_code&scope=read&code={0}&client_id={1}&client_secret={2}&redirect_uri=http://localhost:8083/account/connect/callback";
-
-        String url = MessageFormat.format(urlTemplate,authenticationCode,clientId,clientSecret);
-        System.out.println(url);
-
-        ResponseEntity<OAuth2AccessToken> responseEntity = restTemplate.getForEntity(url,OAuth2AccessToken.class);
-
-        OAuth2AccessToken accessToken = responseEntity.getBody();
-        System.out.println(accessToken.toString());
-
-
-        return "redirect:http://localhost:8083/home?access_token=" + accessToken.getValue();
-    }
+//    @RequestMapping("/account/connect/callback")
+//    public String getAccessKeyAndGoHome(@RequestParam("code") String authenticationCode,RedirectAttributes redirectAttributes){
+//        String urlTemplate = "http://localhost:8081/oauth/token?grant_type=authorization_code&scope=read&code={0}&client_id={1}&client_secret={2}&redirect_uri=http://localhost:8083/account/connect/callback";
+//
+//        String url = MessageFormat.format(urlTemplate,authenticationCode,clientId,clientSecret);
+//        System.out.println(url);
+//
+//        ResponseEntity<OAuth2AccessToken> responseEntity = restTemplate.getForEntity(url,OAuth2AccessToken.class);
+//
+//        OAuth2AccessToken accessToken = responseEntity.getBody();
+//        System.out.println(accessToken.toString());
+//        return "redirect:http://localhost:8083/home?access_token=" + accessToken.getValue();
+//    }
 }

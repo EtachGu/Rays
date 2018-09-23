@@ -6,17 +6,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.client.token.AccessTokenProvider;
 import org.springframework.security.oauth2.client.token.AccessTokenProviderChain;
+import org.springframework.security.oauth2.client.token.AccessTokenRequest;
 import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeAccessTokenProvider;
+import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -34,24 +39,35 @@ import java.util.Arrays;
 @EnableOAuth2Client
 public class OAuthConfiguration {
 
-    @Value("${oauth.client.checkTokenUrl}")
+    @Value("${security.oauth2.tokenservice.checkTokenUrl}")
     String checkTokenUrl;
-
-    @Value("fooClientIdPassword")
-    String myClientId;
-
+//
+//    @Value("fooClientIdPassword")
+//    String myClientId;
+//
+//    @Bean
+//    @ConfigurationProperties("spring.oauth2.client")
+//    public ClientCredentialsResourceDetails oauth2RemoteResource() {
+//        ClientCredentialsResourceDetails details = new ClientCredentialsResourceDetails();
+//        details.setClientId(myClientId);
+//        details.setClientSecret("123456");
+//        return details;
+//    }
+//
+////
+////    @Bean
+////    public OAuth2ClientContext oauth2ClientContext() {
+////        return new DefaultOAuth2ClientContext(new DefaultAccessTokenRequest());
+////    }
+//
     @Bean
-    @ConfigurationProperties("spring.oauth2.client")
+    @ConfigurationProperties("security.oauth2.client")
     @Primary
-    public ClientCredentialsResourceDetails oauth2RemoteResource() {
-        ClientCredentialsResourceDetails details = new ClientCredentialsResourceDetails();
-        details.setClientId(myClientId);
-        return details;
-    }
-
-    @Bean
-    public OAuth2ClientContext oauth2ClientContext() {
-        return new DefaultOAuth2ClientContext(new DefaultAccessTokenRequest());
+    public OAuth2ProtectedResourceDetails oAuth2ProtectedResourceDetails(){
+        AuthorizationCodeResourceDetails details = new AuthorizationCodeResourceDetails();
+//        details.setClientId(myClientId);
+//        details.setClientSecret("123456");
+        return  details;
     }
 
     @Bean
@@ -69,26 +85,31 @@ public class OAuthConfiguration {
 
     /**
      * 注册处理redirect uri的filter
-     * @param oauth2RestTemplate
-     * @param tokenService
      * @return
      */
     @Bean
     public OAuth2ClientAuthenticationProcessingFilter oauth2ClientAuthenticationProcessingFilter(
-            OAuth2RestTemplate oauth2RestTemplate,
-            RemoteTokenServices tokenService) {
-        OAuth2ClientAuthenticationProcessingFilter filter = new OAuth2ClientAuthenticationProcessingFilter("/index");
-        filter.setRestTemplate(oauth2RestTemplate);
-        filter.setTokenServices(tokenService);
-
+            OAuth2RestTemplate oAuth2RestTemplate,
+            RemoteTokenServices tokenServices) {
+        OAuth2ClientAuthenticationProcessingFilter filter = new OAuth2ClientAuthenticationProcessingFilter("/account/connect/callback");
+        filter.setRestTemplate(oAuth2RestTemplate);
+        filter.setTokenServices(tokenServices);
 
         //设置回调成功的页面
         filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler() {
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
                 this.setDefaultTargetUrl("/home");
+                System.out.println("OAuth2Client Authentication CallBack");
                 super.onAuthenticationSuccess(request, response, authentication);
             }
         });
+        filter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler(){
+            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+                System.out.println("OAuth2Client Authentication CallBack Failed");
+                super.onAuthenticationFailure(request, response, exception);
+            }
+        });
+        System.out.println("Filter OAuth2Client Created");
         return filter;
     }
 
