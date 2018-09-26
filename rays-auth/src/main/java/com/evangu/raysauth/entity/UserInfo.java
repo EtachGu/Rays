@@ -1,4 +1,4 @@
-package com.evangu.raysauth.domain;
+package com.evangu.raysauth.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
