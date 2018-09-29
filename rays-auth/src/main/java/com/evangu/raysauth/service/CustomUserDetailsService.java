@@ -1,6 +1,6 @@
 package com.evangu.raysauth.service;
 
-import com.evangu.raysauth.domain.UserInfo;
+import com.evangu.raysauth.entity.UserInfo;
 import com.evangu.raysauth.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

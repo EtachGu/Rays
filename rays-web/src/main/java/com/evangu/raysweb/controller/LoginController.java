@@ -13,9 +13,7 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -50,6 +48,11 @@ public class LoginController {
     @RequestMapping("/login")
     public ModelAndView index() {
         return new ModelAndView("login");
+    }
+
+    @RequestMapping(path = "/account/login",method = RequestMethod.POST)
+    public void toLogin(@RequestParam("username") String userName, @RequestParam("password") String passWord ){
+
     }
 
 //    @RequestMapping("/login")
