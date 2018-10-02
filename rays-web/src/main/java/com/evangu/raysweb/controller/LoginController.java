@@ -50,19 +50,19 @@ public class LoginController {
         return new ModelAndView("login");
     }
 
-    @RequestMapping(path = "/account/login",method = RequestMethod.POST)
-    public String toLogin(@RequestParam("username") String userName, @RequestParam("password") String passWord,RedirectAttributes redirectAttributes){
-       String urlTemplate = "http://localhost:8081/oauth/token?grant_type=password&scope=read&username={0}&password={1}&client_id={2}&client_secret={3}";
-
-        String url = MessageFormat.format(urlTemplate,userName,passWord,clientId,clientSecret);
-        System.out.println(url);
-
-        ResponseEntity<OAuth2AccessToken> responseEntity = restTemplate.getForEntity(url,OAuth2AccessToken.class);
-
-        OAuth2AccessToken accessToken = responseEntity.getBody();
-        System.out.println(accessToken.toString());
-        return "redirect:http://localhost:8083/home?access_token=" + accessToken.getValue();
-    }
+//    @RequestMapping(path = "/account/login",method = RequestMethod.POST)
+//    public String toLogin(@RequestParam("username") String userName, @RequestParam("password") String passWord,RedirectAttributes redirectAttributes){
+//       String urlTemplate = "http://localhost:8081/oauth/token?grant_type=password&scope=read&username={0}&password={1}&client_id={2}&client_secret={3}";
+//
+//        String url = MessageFormat.format(urlTemplate,userName,passWord,clientId,clientSecret);
+//        System.out.println(url);
+//
+//        ResponseEntity<OAuth2AccessToken> responseEntity = restTemplate.getForEntity(url,OAuth2AccessToken.class);
+//
+//        OAuth2AccessToken accessToken = responseEntity.getBody();
+//        System.out.println(accessToken.toString());
+//        return "redirect:http://localhost:8083/home?access_token=" + accessToken.getValue();
+//    }
 
 //    @RequestMapping("/login")
 //    public void login(@RequestHeader Object  requestHeader) {
