@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,10 +29,17 @@ public class HomeController {
         SecurityContext ctx = SecurityContextHolder.getContext();
         Authentication auth = ctx.getAuthentication();
 
-        String userName = (String) auth.getPrincipal();
-        System.out.println(userName);
+        // 当事人
+        Object principal = auth.getPrincipal();
+        String username = "";
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        System.out.println(username);
         ModelAndView m = new ModelAndView("home");
-        m.addObject("message",userName);
+        m.addObject("message",username);
         m.addObject("authorities",auth.getAuthorities());
         m.addObject("details",auth.getDetails());
         m.addObject("credentials",auth.getCredentials());
