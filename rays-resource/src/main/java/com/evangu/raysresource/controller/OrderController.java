@@ -1,5 +1,7 @@
 package com.evangu.raysresource.controller;
 
+import com.evangu.raysresource.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
-public class TestController {
+public class OrderController {
 
+    @Autowired
+    OrderService orderService;
 
     @GetMapping("/product/{id}")
     public String getProduct(@PathVariable String id) {
@@ -30,7 +34,7 @@ public class TestController {
     public String getOrder(@PathVariable String id) {
         //for debug
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return "order id : " + id;
+        return orderService.getOrder(id);
     }
 
 }
