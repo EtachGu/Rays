@@ -1,6 +1,7 @@
 package com.evangu.raysweb.controller;
 
 import com.evangu.raysweb.config.RaysUsernamePasswordConfig;
+import com.evangu.raysweb.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,9 @@ import java.util.Arrays;
  */
 @Controller
 public class HomeController {
+
+    @Autowired
+    OrderService orderServiceClient;
 
     private RestTemplate restTemplate;
 
@@ -87,11 +91,12 @@ public class HomeController {
     }
 
     public String getOrder(OAuth2AuthenticationDetails oauthDetails){
-        String urlTemplate = "http://localhost:8082/api/order/1?access_token={0}";
-        String url = MessageFormat.format(urlTemplate,oauthDetails.getTokenValue());
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url,String.class);
 
+//        String urlTemplate = "http://localhost:8082/api/order/1?access_token={0}";
+//        String url = MessageFormat.format(urlTemplate,oauthDetails.getTokenValue());
+        String result = orderServiceClient.getOrder("1",oauthDetails.getTokenValue());
+//        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url,String.class);
         System.out.println(oauthDetails.getTokenValue());
-        return  responseEntity.getBody();
+        return  result;
     }
 }
