@@ -1,6 +1,7 @@
 package com.evangu.raysauth.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -9,7 +10,8 @@ import java.util.Collection;
  * @version：1.0
  */
 @Entity
-public class Privilege {
+@Table(name = "permissioninfo")
+public class PermissionInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,6 +19,6 @@ public class Privilege {
 
     private String name;
 
-    @ManyToMany(mappedBy = "privileges")
+    @ManyToMany(mappedBy = "permissioninfos")
     private Collection<Role> roles;
 }
