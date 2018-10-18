@@ -39,7 +39,7 @@ import javax.sql.DataSource;
 @Configuration
 @PropertySource({ "classpath:persistence.properties" })
 @EnableAuthorizationServer
-public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
     private static final String DEMO_RESOURCE_ID = "order";
 
