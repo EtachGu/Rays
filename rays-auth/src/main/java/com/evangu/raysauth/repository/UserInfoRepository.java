@@ -2,6 +2,7 @@ package com.evangu.raysauth.repository;
 
 import com.evangu.raysauth.entity.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 

@@ -5,8 +5,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author: Gu danpeng
@@ -25,9 +26,59 @@ public class UserInfo implements UserDetails {
 
     private String password;
 
+    @ManyToMany
+    @JoinTable(
+            name = "userinfos_roles",
+            joinColumns = @JoinColumn(
+                    name = "userinfo_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
+
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+//    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        return this.getGrantedAuthorities(getPrivileges(this.roles));
+    }
+
+    private List<String> getPrivileges(Collection<Role> roles) {
+        List<String> permissions = new ArrayList<>();
+        List<Permission> collection = new ArrayList<>();
+        for (Role role : roles) {
+            collection.addAll(role.getPermissions());
+        }
+        for (Permission item : collection) {
+            permissions.add(item.getName());
+        }
+        return permissions;
+    }
+
+    private List<GrantedAuthority> getGrantedAuthorities(List<String> permissions) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (String permission : permissions) {
+            authorities.add(new SimpleGrantedAuthority(permission));
+        }
+        return authorities;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

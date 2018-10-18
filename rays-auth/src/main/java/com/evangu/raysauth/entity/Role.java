@@ -23,10 +23,42 @@ public class Role {
 
     @ManyToMany
     @JoinTable(
-            name = "roles_permissioninfos",
+            name = "roles_permissions",
             joinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
-                    name = "permissioninfo_id", referencedColumnName = "id"))
-    private Collection<PermissionInfo> privileges;
+                    name = "permission_id", referencedColumnName = "id"))
+    private Collection<Permission> permissions;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Collection<UserInfo> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Collection<UserInfo> users) {
+        this.users = users;
+    }
+
+    public Collection<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Collection<Permission> permissions) {
+        this.permissions = permissions;
+    }
 }
