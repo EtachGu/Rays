@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,29 +36,11 @@ public class UserInfo implements UserDetails {
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
-//    }
+    @Transient
+    private Collection<String> permissions;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.getGrantedAuthorities(getPrivileges(this.roles));
-    }
-
-    private List<String> getPrivileges(Collection<Role> roles) {
-        List<String> permissions = new ArrayList<>();
-        List<Permission> collection = new ArrayList<>();
-        for (Role role : roles) {
-            collection.addAll(role.getPermissions());
-        }
-        for (Permission item : collection) {
-            permissions.add(item.getName());
-        }
-        return permissions;
-    }
-
-    private List<GrantedAuthority> getGrantedAuthorities(List<String> permissions) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (String permission : permissions) {
             authorities.add(new SimpleGrantedAuthority(permission));
@@ -80,6 +63,21 @@ public class UserInfo implements UserDetails {
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
+
+    public Collection<Role> getRoles(){
+        return this.roles;
+    }
+
+    @Transient
+    public void setPermissions(Collection<String> permissions){
+        this.permissions = permissions;
+    }
+
+    @Transient
+    public Collection<String> getPermissions() {
+        return this.permissions;
+    }
+
 
     @Override
     public String getPassword() {

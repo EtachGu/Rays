@@ -1,6 +1,7 @@
 package com.evangu.raysauth.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Collection;
  */
 @Entity
 @Table(name = "role")
-public class Role {
+public class Role implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
