@@ -13,12 +13,15 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.lang.reflect.Array;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 
 /**
  * @author: Gu danpeng
@@ -74,7 +77,7 @@ public class LoginController {
         String url = "http://localhost:8081/oauth/authorize";
         redirectAttributes.addAttribute("client_id", "fooClientIdPassword");
         redirectAttributes.addAttribute("response_type", "code");
-        redirectAttributes.addAttribute("scope", "read");
+        redirectAttributes.addAttribute("scope", "read foo");
         redirectAttributes.addAttribute("redirect_uri", "http://localhost:8083/account/connect/callback");
         return "redirect:" + url;
     }

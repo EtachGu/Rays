@@ -21,6 +21,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
@@ -105,6 +107,7 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
 //                .authenticationManager(authenticationManager);
 //                .tokenStore(new RedisTokenStore(redisConnectionFactory));
+                .approvalStore(approvalStore())
         .tokenStore(tokenStore())
                 .authenticationManager(authenticationManager);;
     }
@@ -166,4 +169,10 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
     public TokenStore tokenStore() {
         return new JdbcTokenStore(dataSource());
     }
+
+    @Bean
+    public ApprovalStore approvalStore() {
+        return new JdbcApprovalStore(dataSource());
+    }
+
 }
