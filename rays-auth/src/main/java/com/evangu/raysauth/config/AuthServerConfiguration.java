@@ -1,5 +1,6 @@
 package com.evangu.raysauth.config;
 
+import com.evangu.raysauth.service.RaysTokenEnhancer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,11 +28,13 @@ import org.springframework.security.oauth2.provider.code.AuthorizationCodeServic
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 /**
  * @author: Gu danpeng
@@ -103,12 +106,15 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+//        final TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+//        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer()));
         endpoints
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
 //                .authenticationManager(authenticationManager);
 //                .tokenStore(new RedisTokenStore(redisConnectionFactory));
                 .approvalStore(approvalStore())
-        .tokenStore(tokenStore())
+                .tokenStore(tokenStore())
+                .tokenEnhancer(tokenEnhancer())
                 .authenticationManager(authenticationManager);;
     }
 
@@ -138,6 +144,11 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
         return defaultTokenServices;
     }
 
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return new RaysTokenEnhancer();
+    }
+
     // JDBC token store configuration
 
     @Bean
@@ -156,6 +167,7 @@ public class AuthServerConfiguration extends AuthorizationServerConfigurerAdapte
     }
 
     @Bean
+    @Primary
     public DataSource dataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
