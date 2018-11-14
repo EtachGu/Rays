@@ -1,0 +1,30 @@
+spring:
+    application:
+        name: rays-gate
+server:
+    port: 8766 #启动端口
+#
+zuul:
+  ignored-services: "*"
+  sensitive-headers:
+  prefix: /api #为zuul设置一个公共的前缀
+#  ratelimit: # 网关限流
+#    key-prefix: gate_rate
+#    enabled: true
+#    repository: REDIS #REDIS, JPA, IN_MEMORY
+#    behind-proxy: true
+#    default-policy: #optional - will apply unless specific policy exists
+#      limit: 200
+#      refresh-interval: 60 #default value (in seconds)
+#      type: #optional
+#        - user
+#        - origin
+#        - url
+  routes:
+    back:
+      path: /resource/**
+      serviceId: rays-resource
+
+    auth:
+      path: /auth/**
+      serviceId: rays-auth
