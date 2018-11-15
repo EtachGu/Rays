@@ -3,6 +3,11 @@ spring:
         name: rays-gate
 server:
     port: 8766 #启动端口
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka/
 #
 zuul:
   ignored-services: "*"
@@ -28,3 +33,7 @@ zuul:
     auth:
       path: /auth/**
       serviceId: rays-auth
+
+ribbon:
+  eureka:
+    enabled: true
