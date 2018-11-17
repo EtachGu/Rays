@@ -26,13 +26,17 @@ zuul:
 #        - origin
 #        - url
   routes:
-    back:
+    resource:
       path: /resource/**
       serviceId: rays-resource
 
     auth:
       path: /auth/**
       serviceId: rays-auth
+
+    web:
+      path: /web/**
+      serviceId: rays-web
 
 ribbon:
   eureka:
