@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
  * @data: 2018-9-18
  * @version：1.0
  */
-@FeignClient(value = "rays-resource",fallback = OrderServiceHystrix.class)
+@FeignClient(value = "rays-gate",fallback = OrderServiceHystrix.class)
 public interface OrderService {
-    @RequestMapping(method = RequestMethod.GET, value = "/api/order/{id}", consumes = "application/json")
+    @RequestMapping(method = RequestMethod.GET, value = "api/resource/api/order/{id}", consumes = "application/json")
     public String getOrder(@PathVariable("id") String id, @RequestParam("access_token") String token);
 }
